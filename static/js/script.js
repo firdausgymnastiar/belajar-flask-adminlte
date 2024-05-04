@@ -6,88 +6,35 @@ function generateRandomNumber() {
   // Menampilkan angka acak di halaman HTML
   document.getElementById("randomNumberDisplay").value = randomNumber;
 }
+// Deteksi apakah perangkat merupakan perangkat mobile
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-// Add event listener to the form
-// document
-//   .getElementById("formRegister")
-//   .addEventListener("submit", function (event) {
-//     event.preventDefault(); // Prevent the form from submitting normally
+// Menangkap elemen input dan tombol
+const cameraInput = document.getElementById("cameraInput");
+const cameraButton = document.getElementById("cameraButton");
+const preview = document.getElementById("preview");
 
-//     // Get the username value from the form
-//     var emailAddress = document.getElementById("emailAddress").value;
-//     var fullName = document.getElementById("fullName").value;
-//     var programStudi = document.getElementById("programStudi").value;
-//     var username = document.getElementById("nim").value;
-//     var angkatan = document.getElementById("angkatan").value;
+// Menampilkan tombol hanya jika perangkat adalah perangkat mobile
+if (isMobile) {
+  cameraButton.style.display = "block";
+}
 
-//     async
-//     // Simulate form submission with AJAX
-//     fetch("/tes", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ username: username }),
-//     })
-//       .then((response) => {
-//         if (response.ok) {
-//           // If the response is successful, show success message
-//           Swal.fire({
-//             icon: "success",
-//             title: "Success!",
-//             text: "Username submitted successfully: " + username,
-//           });
-//         } else {
-//           // If there is an error, show error message
-//           Swal.fire({
-//             icon: "error",
-//             title: "Error!",
-//             text: "Failed to submit username. gagal di database.",
-//           });
-//         }
-//       })
-//       .catch((error) => {
-//         // If there is an error, show error message
-//         Swal.fire({
-//           icon: "error",
-//           title: "Error!",
-//           text: "Failed to submit username. gagal di promise.",
-//         });
-//       });
-//   });
+// Menambahkan event listener untuk tombol
+cameraButton.addEventListener("click", function () {
+  // Membuka kamera saat tombol ditekan
+  cameraInput.click();
+});
 
-// function login() {
-//   var username = document.getElementById("nim").value;
-//   var password = document.getElementById("programStudi").value;
-
-//   // Kirim data login ke server menggunakan AJAX
-//   var xhr = new XMLHttpRequest();
-//   xhr.open("POST", "/tes", true);
-//   xhr.setRequestHeader("Content-Type", "application/json");
-//   xhr.onreadystatechange = function () {
-//     if (xhr.readyState === XMLHttpRequest.DONE) {
-//       if (xhr.status === 200) {
-//         var response = JSON.parse(xhr.responseText);
-//         if (response.success) {
-//           // Jika login berhasil, tampilkan popup SweetAlert
-//           Swal.fire({
-//             icon: "success",
-//             title: "Login Successful!",
-//             text: "Welcome " + username,
-//           });
-//         } else {
-//           // Jika login gagal, tampilkan popup SweetAlert
-//           Swal.fire({
-//             icon: "error",
-//             title: "Login Failed!",
-//             text: response.message,
-//           });
-//         }
-//       } else {
-//         console.error(xhr.responseText);
-//       }
-//     }
-//   };
-//   var data = JSON.stringify({ username: username, password: password });
-//   xhr.send(data);
-// }
+// Menambahkan event listener ketika gambar dipilih
+cameraInput.addEventListener("change", function () {
+  // Memastikan ada file yang dipilih
+  if (cameraInput.files && cameraInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      // Menampilkan gambar yang dipilih sebagai preview
+      preview.src = e.target.result;
+    };
+    // Membaca file gambar yang dipilih sebagai URL data
+    reader.readAsDataURL(cameraInput.files[0]);
+  }
+});

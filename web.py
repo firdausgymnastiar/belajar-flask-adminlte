@@ -16,7 +16,15 @@ def main():
 
 @app.route("/register")
 def register():
-    return render_template('register.html',menu='register')
+    # Mendeteksi apakah perangkat adalah perangkat mobile
+    user_agent = request.headers.get('User-Agent').lower()
+    is_mobile = any(mobile in user_agent for mobile in ['iphone', 'android', 'blackberry', 'opera mini', 'windows mobile'])
+    
+    if is_mobile:
+        return render_template('register.html',menu='register')
+    else:
+        return "<h1>Maaf, fitur ini hanya tersedia di perangkat mobile.</h1>"
+    # return render_template('register.html',menu='register')
 
 @app.route("/registerwajah", methods=["POST"])
 def registerwajah():
@@ -43,7 +51,15 @@ def registerwajah():
 
 @app.route("/login")
 def login():
-    return render_template('login.html',menu='login')
+    # return render_template('login.html',menu='login')
+# Mendeteksi apakah perangkat adalah perangkat mobile
+    user_agent = request.headers.get('User-Agent').lower()
+    is_mobile = any(mobile in user_agent for mobile in ['iphone', 'android', 'blackberry', 'opera mini', 'windows mobile'])
+    
+    if is_mobile:
+        return render_template('login.html',menu='login')
+    else:
+        return "<h1>Maaf, fitur ini hanya tersedia di perangkat mobile.</h1>"
 
 # @app.route("/tes", methods=["POST"])
 # def ngetes():
@@ -114,4 +130,4 @@ def generate():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
