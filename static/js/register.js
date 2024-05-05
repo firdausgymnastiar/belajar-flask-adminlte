@@ -15,36 +15,18 @@ async function sendToServer() {
     method: "POST",
     body: formData,
   });
+  const responseData = await response.json();
   try {
-    if (response.ok) {
-      // If the response is successful, show success message
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "berhasil di submit",
-      }).then((result) => {
-        // Redirect to a new page after clicking "OK"
-        if (result.isConfirmed) {
-          window.location.href = "/register"; // Ganti "/success-page" dengan URL halaman yang ingin Anda arahkan
-        }
-      });
+    if (response.ok && responseData.success) {
+      displayAlert(responseData);
     } else {
-      // If there is an error in the response, show error message
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "respon dari server false. gagal di submit.",
-      });
-      window.location.href = "/register"; // Ganti "/success-page" dengan URL halaman yang ingin Anda arahkan
+      // Jika permintaan gagal atau respons dari Flask menunjukkan kegagalan
+      displayAlert(responseData.error_message || responseData.message);
     }
   } catch (error) {
-    // If there is an error in fetching or parsing the response, show error message
-    Swal.fire({
-      icon: "error",
-      title: "Error!",
-      text: "GAGAL MANGGIL API BE. gagal di submit.",
-    });
-    window.location.href = "/register"; // Ganti "/success-page" dengan URL halaman yang ingin Anda arahkan
+    // Jika terjadi kesalahan dalam melakukan permintaan
+    displayAlert("Terjadi kesalahan dalam mengirim permintaan");
+    console.error("Error:", error);
   }
 }
 
@@ -78,3 +60,46 @@ gambarWajah.addEventListener("change", function () {
     reader.readAsDataURL(gambarWajah.files[0]);
   }
 });
+
+// Fungsi untuk menampilkan SweetAlert berdasarkan pesan dari server
+function displayAlert(responseData) {
+  let message = responseData.message; // Mengambil nilai dari kunci 'message'
+
+  let alertTitle, alertIcon;
+
+  // Menyesuaikan judul dan ikon berdasarkan pesan dari server
+  switch (message) {
+    case "Data berhasil disimpan":
+      alertTitle = "Success!";
+      alertIcon = "success";
+      break;
+    case "No file part":
+    case "No selected file":
+    case "Missing required data":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      break;
+    default:
+      alertTitle = "Error!";
+      alertIcon = "error";
+      message = "Terjadi kesalahan saat menyimpan data";
+      break;
+  }
+
+  // Menampilkan SweetAlert
+  Swal.fire({
+    icon: alertIcon,
+    title: alertTitle,
+    text: message,
+  }).then((result) => {
+    // Setelah mengklik tombol "OK"
+    if (result.isConfirmed) {
+      window.location.href = "/register"; // Ganti '/redirect-page' dengan URL halaman yang ingin Anda arahkan
+
+      // Redirect hanya pada case 'Data berhasil disimpan'
+      // if (message === "Data berhasil disimpan") {
+      //   window.location.href = "/register"; // Ganti '/redirect-page' dengan URL halaman yang ingin Anda arahkan
+      // }
+    }
+  });
+}

@@ -33,7 +33,7 @@ def register():
     if is_mobile:
         return render_template('register.html',menu='register')
     else:
-        return "<h1>Maaf, fitur ini hanya tersedia di perangkat mobile.</h1>"
+        return render_template('mobile-only.html')
 
 @app.route("/registerwajah", methods=["POST"])
 def registerwajah():
