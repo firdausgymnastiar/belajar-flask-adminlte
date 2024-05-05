@@ -1,57 +1,4 @@
-const emailAddress = document.getElementById("emailAddress");
-const fullName = document.getElementById("fullName");
-const nim = document.getElementById("nim");
-const programStudi = document.getElementById("programStudi");
-const angkatan = document.getElementById("angkatan");
 const formRegister = document.getElementById("formRegister");
-
-async function sendToServer() {
-  const formData = new FormData();
-  formData.append("emailAddress", emailAddress.value);
-  formData.append("fullName", fullName.value);
-  formData.append("programStudi", programStudi.value);
-  formData.append("nim", nim.value);
-  formData.append("angkatan", angkatan.value);
-
-  const response = await fetch("/registerwajah", {
-    method: "POST",
-    body: formData,
-  });
-  try {
-    const result = await response.json();
-    if (response.ok) {
-      // If the response is successful, show success message
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "berhasil di submit",
-      });
-    } else {
-      // If there is an error in the response, show error message
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "respon dari server false. gagal di submit.",
-      });
-    }
-  } catch (error) {
-    // If there is an error in fetching or parsing the response, show error message
-    Swal.fire({
-      icon: "error",
-      title: "Error!",
-      text: "GAGAL MANGGIL API BE. gagal di submit.",
-    });
-  }
-}
-
-formRegister.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  const tes = fullName.value;
-  console.log(tes);
-  sendToServer();
-});
-
 // Deteksi apakah perangkat merupakan perangkat mobile
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -61,10 +8,51 @@ const cameraButton = document.getElementById("cameraButton");
 const ulangiCamera = document.getElementById("ulangiCamera");
 const preview = document.getElementById("preview");
 
-// Menampilkan tombol hanya jika perangkat adalah perangkat mobile
-if (isMobile) {
-  cameraButton.style.display = "block";
+async function sendToServer() {
+  const formData = new FormData(formRegister);
+
+  const response = await fetch("/registerwajah", {
+    method: "POST",
+    body: formData,
+  });
+  try {
+    if (response.ok) {
+      // If the response is successful, show success message
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "berhasil di submit",
+      }).then((result) => {
+        // Redirect to a new page after clicking "OK"
+        if (result.isConfirmed) {
+          window.location.href = "/register"; // Ganti "/success-page" dengan URL halaman yang ingin Anda arahkan
+        }
+      });
+    } else {
+      // If there is an error in the response, show error message
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "respon dari server false. gagal di submit.",
+      });
+      window.location.href = "/register"; // Ganti "/success-page" dengan URL halaman yang ingin Anda arahkan
+    }
+  } catch (error) {
+    // If there is an error in fetching or parsing the response, show error message
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: "GAGAL MANGGIL API BE. gagal di submit.",
+    });
+    window.location.href = "/register"; // Ganti "/success-page" dengan URL halaman yang ingin Anda arahkan
+  }
 }
+
+formRegister.addEventListener("submit", function (event) {
+  event.preventDefault();
+  sendToServer();
+});
+
 // Menambahkan event listener untuk tombol
 cameraButton.addEventListener("click", function () {
   // Membuka kamera saat tombol ditekan
