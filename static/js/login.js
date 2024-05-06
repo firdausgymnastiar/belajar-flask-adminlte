@@ -76,6 +76,7 @@ function displayAlert(responseData) {
     case "No file part":
     case "No selected file":
     case "Missing required data":
+    case "gada wajahnya":
       alertTitle = "Error!";
       alertIcon = "error";
       break;
