@@ -1,4 +1,4 @@
-const formRegister = document.getElementById("formRegister");
+const formLogin = document.getElementById("formLogin");
 // Deteksi apakah perangkat merupakan perangkat mobile
 // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -9,9 +9,9 @@ const ulangiCamera = document.getElementById("ulangiCamera");
 const preview = document.getElementById("preview");
 
 async function sendToServer() {
-  const formData = new FormData(formRegister);
+  const formData = new FormData(formLogin);
 
-  const response = await fetch("/registerwajah", {
+  const response = await fetch("/loginkelas", {
     method: "POST",
     body: formData,
   });
@@ -30,7 +30,7 @@ async function sendToServer() {
   }
 }
 
-formRegister.addEventListener("submit", function (event) {
+formLogin.addEventListener("submit", function (event) {
   event.preventDefault();
   sendToServer();
 });
@@ -69,7 +69,7 @@ function displayAlert(responseData) {
 
   // Menyesuaikan judul dan ikon berdasarkan pesan dari server
   switch (message) {
-    case "Data berhasil disimpan":
+    case "Selamat Datang!":
       alertTitle = "Success!";
       alertIcon = "success";
       break;
@@ -94,7 +94,7 @@ function displayAlert(responseData) {
   }).then((result) => {
     // Setelah mengklik tombol "OK"
     if (result.isConfirmed) {
-      window.location.href = "/register"; // Ganti '/redirect-page' dengan URL halaman yang ingin Anda arahkan
+      window.location.href = "/table"; // Ganti '/redirect-page' dengan URL halaman yang ingin Anda arahkan
 
       // Redirect hanya pada case 'Data berhasil disimpan'
       // if (message === "Data berhasil disimpan") {
