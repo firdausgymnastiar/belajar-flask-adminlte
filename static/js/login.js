@@ -1,3 +1,5 @@
+// const { text } = require("wd/lib/commands");
+
 const formLogin = document.getElementById("formLogin");
 // Deteksi apakah perangkat merupakan perangkat mobile
 // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -21,7 +23,7 @@ async function sendToServer() {
       displayAlert(responseData);
     } else {
       // Jika permintaan gagal atau respons dari Flask menunjukkan kegagalan
-      displayAlert(responseData.error_message || responseData.message);
+      displayAlert(responseData.error_message || responseData);
     }
   } catch (error) {
     // Jika terjadi kesalahan dalam melakukan permintaan
@@ -64,26 +66,51 @@ gambarWajah.addEventListener("change", function () {
 // Fungsi untuk menampilkan SweetAlert berdasarkan pesan dari server
 function displayAlert(responseData) {
   let message = responseData.message; // Mengambil nilai dari kunci 'message'
+  let nim = responseData.nim; // Mengambil nilai dari kunci 'nim'
 
-  let alertTitle, alertIcon;
+  let alertTitle, alertIcon, alertText;
 
   // Menyesuaikan judul dan ikon berdasarkan pesan dari server
   switch (message) {
     case "Selamat Datang!":
       alertTitle = "Success!";
       alertIcon = "success";
+      alertText = `Selamat Hadir ${nim}`;
       break;
-    case "No file part":
-    case "No selected file":
-    case "Missing required data":
     case "gada wajahnya":
       alertTitle = "Error!";
       alertIcon = "error";
+      alertText = "belum daftar";
+      break;
+    case "No file part":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Ada form yang kosong";
+      break;
+    case "No selected file":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "pilih foto dulu";
+      break;
+    case "Missing required data":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Ada yang salah input";
+      break;
+    case "Nim anda salah!":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Nim salah";
+      break;
+    case "salah di mysql!":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "mysqlnya gagal";
       break;
     default:
       alertTitle = "Error!";
       alertIcon = "error";
-      message = "Terjadi kesalahan saat menyimpan data";
+      alertText = "Terjadi kesalahan saat menyimpan data";
       break;
   }
 
@@ -91,7 +118,7 @@ function displayAlert(responseData) {
   Swal.fire({
     icon: alertIcon,
     title: alertTitle,
-    text: message,
+    text: alertText,
   }).then((result) => {
     // Setelah mengklik tombol "OK"
     if (result.isConfirmed) {
