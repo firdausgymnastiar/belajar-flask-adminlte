@@ -134,6 +134,11 @@ function displayAlert(responseData) {
       alertIcon = "error";
       alertText = "Terjadi kesalahan dalam mengirim permintaan";
       break;
+    case "form kosong":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Form kosong, mohon ulangi!";
+      break;
     default:
       alertTitle = "Error!";
       alertIcon = "error";

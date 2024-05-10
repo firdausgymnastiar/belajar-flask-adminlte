@@ -120,7 +120,12 @@ function displayAlert(responseData) {
     case "Missing required data":
       alertTitle = "Error!";
       alertIcon = "error";
-      alertText = "Ada yang salah input";
+      alertText = "Mohon Lengkapi Formulir dengan Benar!";
+      break;
+    case "form kosong":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Form kosong, mohon ulangi!";
       break;
     default:
       alertTitle = "Error!";
