@@ -11,6 +11,9 @@ const preview = document.getElementById("preview");
 async function sendToServer() {
   const formData = new FormData(formRegister);
 
+  // Tampilkan overlay saat memulai submit form
+  document.getElementById("overlay").style.display = "flex";
+
   const response = await fetch("/registerwajah", {
     method: "POST",
     body: formData,
@@ -143,6 +146,7 @@ function displayAlert(responseData) {
     icon: alertIcon,
     title: alertTitle,
     text: alertText,
+    allowOutsideClick: false,
   }).then((result) => {
     // Setelah mengklik tombol "OK"
     if (result.isConfirmed) {

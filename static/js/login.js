@@ -10,8 +10,13 @@ const cameraButton = document.getElementById("cameraButton");
 const ulangiCamera = document.getElementById("ulangiCamera");
 const preview = document.getElementById("preview");
 
+var token = document.getElementById("tokenKelas");
+
 async function sendToServer() {
   const formData = new FormData(formLogin);
+
+  // Tampilkan overlay saat memulai submit form
+  document.getElementById("overlay").style.display = "flex";
 
   const response = await fetch("/loginkelas", {
     method: "POST",
@@ -129,6 +134,7 @@ function displayAlert(responseData) {
     icon: alertIcon,
     title: alertTitle,
     text: alertText,
+    allowOutsideClick: false, // Mengizinkan menutup alert dengan mengklik di luar kotak alert
   }).then((result) => {
     // Setelah mengklik tombol "OK"
     if (result.isConfirmed) {
