@@ -77,10 +77,30 @@ function displayAlert(responseData) {
       alertIcon = "success";
       alertText = `Selamat Hadir ${nim}`;
       break;
-    case "gada wajahnya":
+    case "Lebih dari 1 wajah terdeteksi":
       alertTitle = "Error!";
       alertIcon = "error";
-      alertText = "belum daftar";
+      alertText = "Terdapat lebih dari 1 wajah pada gambar";
+      break;
+    case "Tidak ada wajah yang terdeteksi":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Tidak ada wajah yang terdeteksi";
+      break;
+    case "gambar kurang jelas":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Gambar kurang jelas, mohon ulangi!";
+      break;
+    case "anda belum terdaftar":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Anda belum terdaftar, mohon segera registrasi!";
+      break;
+    case "Gada didaftar db!":
+      alertTitle = "Error!";
+      alertIcon = "error";
+      alertText = "Data tidak tersedia di database";
       break;
     case "No file part":
       alertTitle = "Error!";
@@ -97,16 +117,6 @@ function displayAlert(responseData) {
       alertIcon = "error";
       alertText = "Ada yang salah input";
       break;
-    case "Nim anda salah!":
-      alertTitle = "Error!";
-      alertIcon = "error";
-      alertText = "Nim salah";
-      break;
-    case "salah di mysql!":
-      alertTitle = "Error!";
-      alertIcon = "error";
-      alertText = "mysqlnya gagal";
-      break;
     default:
       alertTitle = "Error!";
       alertIcon = "error";
@@ -122,7 +132,7 @@ function displayAlert(responseData) {
   }).then((result) => {
     // Setelah mengklik tombol "OK"
     if (result.isConfirmed) {
-      window.location.href = "/table"; // Ganti '/redirect-page' dengan URL halaman yang ingin Anda arahkan
+      window.location.href = "/login"; // Ganti '/redirect-page' dengan URL halaman yang ingin Anda arahkan
 
       // Redirect hanya pada case 'Data berhasil disimpan'
       // if (message === "Data berhasil disimpan") {
