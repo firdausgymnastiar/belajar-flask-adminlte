@@ -22,7 +22,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" action="/registerwajah" method="POST">
+                <form role="form" id="formGenerate" action="/generatetoken" method="POST">
                     <div class="card-body">
                         <div class="form-group">
                             <label for="emailAddress">Alamat Email</label>
@@ -35,8 +35,8 @@
                                 placeholder="Masukan nama lengkap">
                         </div>
                         <div class="form-group">
-                            <label for="username">Kode Nama</label>
-                            <input type="text" class="form-control" id="username" name="kode"
+                            <label for="username">Inisial Nama</label>
+                            <input type="text" class="form-control" id="username" name="inisial"
                                 placeholder="Masukan kode nama">
                         </div>
                         <div class="form-group">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-group">
                             <label for="deskripsi">Deskripsi Kelas</label>
-                            <input type="number" class="form-control" id="deskripsi" name="deskripsi"
+                            <input type="text" class="form-control" id="deskripsi" name="deskripsi"
                                 placeholder="Masukan deskripsi kelas">
                         </div>
                         <br>
@@ -81,6 +81,14 @@
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success">Aktifkan Token!</button>
                     </div>
+
+                    <!-- Overlay -->
+                    <div class="overlay" id="overlay" style="display: none;">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+
                 </form>
             </div>
             <!-- /.card -->
@@ -89,5 +97,7 @@
     </section>
     <!-- /.content -->
 </div>
+<!-- script saya -->
+<script src="{{ url_for('static', filename='js/generate.js') }}"></script>
 
 {% include 'footer.html' %}

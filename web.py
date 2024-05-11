@@ -324,6 +324,35 @@ def table():
 def generate():
     return render_template('generate.html',menu='generate')
 
-
+@app.route("/generatetoken", methods=["POST", "GET"])
+def generatetoken():
+    try:
+        email = request.form.get('email')
+        nama = request.form.get('nama')
+        inisial = request.form.get('inisial')
+        nip = request.form.get('nip')
+        matkul = request.form.get('matkul')
+        pertemuan = request.form.get('pertemuan')
+        deskripsi = request.form.get('deskripsi')
+        token = request.form.get('token')
+        
+        if email and nama and inisial and nip and matkul and pertemuan and deskripsi and token:
+            try:
+                cur = mysql.connection.cursor()
+                cur.execute("INSERT INTO data_token(email,nama,inisial,nip,matkul,pertemuan,deskripsi,token) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (email,nama,inisial,nip,matkul,pertemuan,deskripsi,token))
+                mysql.connection.commit()
+                cur.close()
+                response = {'success': True, 'message': 'Data berhasil disimpan', 'nim': token}
+                return jsonify(response)
+            except:
+                response = {'success': False, 'message': 'gagal pas di mysql'}
+                return jsonify(response), 500  # Mengembalikan kode status 500 (Internal Server Error) jika terjadi kesalahan
+        else:
+            response = {'success': False, 'message': 'Missing required data'}
+            return jsonify(response), 400
+    except:
+        response = {'success': False, 'message': 'form kosong'}
+        return jsonify(response), 400 
+    
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
